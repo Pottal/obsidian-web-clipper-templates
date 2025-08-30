@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "YouTube Embed and transcript v2",
+  "behavior": "create",
+  "noteContentFormat": "# {{title}}\n\n![{{schema:name}}]({{url|replace:\"watch?v=\":\"embed/\"}})\n\n{{selectorHtml:#description-inline-expander|remove_html:(\"#structured-description, #snippet, tp-yt-paper-button\")|strip_tags|replace:\"\\#\":\"\\#\"|callout:(\"summary\",\"Description\",true)}}\n\n{{selectorHtml:ytd-engagement-panel-section-list-renderer[visibility$=\\\"EXPANDED\\\"] #segments-container|remove_html:(\"ytd-transcript-section-header-renderer, dom-if\")|replace:(\"</ytd-transcript-segment-renderer>\":\"</ytd-transcript-segment-renderer><hr>\")|markdown|replace:(\"\\n\\n\":\" \")|replace:(\" --- \":\"\\n\")|callout:(\"note\",\"Transcript (Youtube)\",true)}} \n\n## Comment",
+  "properties": [
+    {
+      "name": "title",
+      "value": "{{schema:@VideoObject:name}}",
+      "type": "text"
+    },
+    {
+      "name": "aliases",
+      "value": "{{schema:name}}, ",
+      "type": "text"
+    },
+    {
+      "name": "channel",
+      "value": "{{schema:@VideoObject:author}}",
+      "type": "text"
+    },
+    {
+      "name": "tags",
+      "value": "",
+      "type": "multitext"
+    },
+    {
+      "name": "reason",
+      "value": "",
+      "type": "text"
+    },
+    {
+      "name": "published",
+      "value": "{{schema:@VideoObject:uploadDate|date:\\\"YYYY-MM-DD\\\"}}",
+      "type": "datetime"
+    },
+    {
+      "name": "created",
+      "value": "{{time|date:\\\"YYYY-MM-DDTHH:mm:ssZ\\\"}}",
+      "type": "datetime"
+    },
+    {
+      "name": "thumbnailUrl",
+      "value": "{{schema:@VideoObject:thumbnailUrl|first}}",
+      "type": "text"
+    },
+    {
+      "name": "source",
+      "value": "{{meta:property:og:url}}",
+      "type": "text"
+    },
+    {
+      "name": "duration",
+      "value": "{{schema:@VideoObject:duration|replace:\\\"PT\\\",\\\"\\\",\\\"S\\\",\\\"\\\"}}",
+      "type": "text"
+    }
+  ],
+  "triggers": [
+    "https://www.youtube.com/watch?v="
+  ],
+  "noteNameFormat": "@{{schema:author}}_{{schema:@VideoObject:uploadDate|date:\"YYYY-MM-DD\"}}",
+  "path": "+inbox"
+}
