@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "0.1.0",
+  "name": "QT",
+  "behavior": "create",
+  "noteContentFormat": "![x.com]({{url}})\n\n---\n\n{{selector:article[tabindex=\"-1\"][data-testid=\"tweet\"] div[lang]|slice:0,1|first|replace:\"/(^|\\s)#(?!#)([^\\s#]+)/g\":\"$1＃$2\"|replace:\"/(https?:\\/\\/[^\\s…]+)…(?=\\s|$)/g\":\"$1\"|callout:(\"quote\",\"引用RT\",false)|replace:\"/$/\"}}<div style=\"text-align: right;\"><i>{{published|date:\"YYYY-MM-DD HH:mm:ss\"}}</i></div>\n\n\n\n{{selector:article[tabindex=\"-1\"][data-testid=\"tweet\"] div[lang]|slice:1,2|first|replace:\"/(^|\\s)#(?!#)([^\\s#]+)/g\":\"$1＃$2\"|replace:\"/(https?:\\/\\/[^\\s…]+)…(?=\\s|$)/g\":\"$1\"|callout:(\"tweet\",\"\",false)|replace:\"/$/\"}}<div style=\"text-align: right;\"><i>{{published|date:\"YYYY-MM-DD HH:mm:ss\"}}</i></div>\n\n\n\n\n\n{{selector:article[tabindex=\"-1\"][data-testid=\"tweet\"] article[tabindex=\"-1\"] [data-testid=\"tweetPhoto\"] img?src|join:\"\\n\"|replace:\"/^https:\\/\\/pbs\\.twimg\\.com\\/media\\/([^?]+)\\?(.+)$/gm\":\"![$1](https://pbs.twimg.com/media/$1?$2)\"|replace:\"/name=\\w+/g\":\"name=orig\"|blockquote|replace:\"/$/\":\"\\n\\n\"}} {{selector:article[tabindex=\"-1\"][data-testid=\"tweet\"] > div [data-testid=\"tweetPhoto\"] img?src|join:\"\\n\"|replace:\"/^https:\\/\\/pbs\\.twimg\\.com\\/media\\/([^?]+)\\?(.+)$/gm\":\"![$1](https://pbs.twimg.com/media/$1?$2)\"|replace:\"/name=\\w+/g\":\"name=orig\"|callout:(\"sorce\",\"  画像\",false)\"/$/\":\"\\n\\n\"}}\n\n{{selector:article[tabindex=\"-1\"][data-testid=\"tweet\"] div[lang]|join:\"\\n\\n\"|replace:\"/…/g\":\"\"|replace:\"/.*?(https?:\\/\\/\\S+)/g\":\"• $1\\n\"|replace:\"/^((?!• ).)*$/gm\":\"\"|replace:\"/\\n{2,}/g\":\"\\n\"|replace:\"/^(•\\s+)(https?:\\/\\/)(?!www\\.)(([a-z0-9-]+\\.)+[a-z0-9-]+)(?=\\/|$)/gmi\":\"$1$2www.$3\"|replace:\"/^•\\s+/gm\":\"- \"|callout:(\"url\",\"  サブドメイン\",false)|replace:\"/$/\":\"\\n\\n\"}}\n\n",
+  "properties": [
+    {
+      "name": "answered",
+      "value": "",
+      "type": "checkbox"
+    },
+    {
+      "name": "url",
+      "value": "{{url}}",
+      "type": "text"
+    },
+    {
+      "name": "author",
+      "value": "{{url|split:\\\"/\\\"|slice:3,4|wikilink}}",
+      "type": "multitext"
+    },
+    {
+      "name": "published",
+      "value": "{{selector:article[tabindex=\\\"-1\\\"][data-testid=\\\"tweet\\\"] a[role=\\\"link\\\"] > time?datetime}}",
+      "type": "datetime"
+    },
+    {
+      "name": "profile",
+      "value": "https://x.com/{{url|split:\\\"/\\\"|slice:3,4}}",
+      "type": "text"
+    },
+    {
+      "name": "tags",
+      "value": "tweets, clippings",
+      "type": "multitext"
+    },
+    {
+      "name": "created",
+      "value": "{{date}}",
+      "type": "datetime"
+    }
+  ],
+  "triggers": [
+    "/^https:\\/\\/x\\.com\\/.+?\\/status\\/\\d+$/"
+  ],
+  "noteNameFormat": "{{author}}_{{published|date:\"YYYY-MM-DD_HH-mm-ss\"}}",
+  "path": "+inbox"
+}
